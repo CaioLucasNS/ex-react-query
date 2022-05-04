@@ -1,92 +1,19 @@
-import logo from "./logo.svg";
 import "./App.css";
-import api from "./services";
-import { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Home } from "./pages/Home";
+import { createContext } from "react";
+import { ContextProvider } from "./context";
 
 const queryClient = new QueryClient();
-
-const TextCard = ({ children }) => (
-  <Typography variant="body2" color="text.secondary">
-    {children}
-  </Typography>
-);
+const context = createContext();
 
 function App() {
-  const [characters, setCharacters] = useState([]);
-
-  useEffect(() => {
-    api
-      .get("character")
-      .then((response) => response.data)
-      .then((data) => setCharacters(data.results));
-  }, []);
-
-  console.log({ characters });
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <Container>
-        <Grid container>
-          {characters &&
-            characters.map((char) => (
-              <Grid item xs={6}>
-                <Card
-                  key={char.id}
-                  sx={{
-                    padding: 2,
-                    margin: 2,
-                    border: "1px solid gray",
-                    borderRadius: 4,
-                  }}
-                >
-                  <CardActionArea
-                    sx={{ display: "flex", flexDirection: "row" }}
-                  >
-                    <CardMedia
-                      component="img"
-                      sx={{ height: 120, width: 120 }}
-                      image={char.image}
-                      alt={`${char.name} image`}
-                    />
-
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {char.name}
-                      </Typography>
-
-                      <TextCard>{char.status && char.status}</TextCard>
-                      <TextCard>{char.species && char.species}</TextCard>
-                      <TextCard>{char.type && char.type}</TextCard>
-                      <TextCard>{char.status && char.status}</TextCard>
-                      <TextCard>{char.gender && char.gender}</TextCard>
-                      <TextCard>
-                        {char.location.name && char.location.name}
-                      </TextCard>
-                    </CardContent>
-
-                    <CardActions>
-                      <Button size="small">Share</Button>
-                      <Button size="small">Learn More</Button>
-                    </CardActions>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-        </Grid>
-      </Container>
-    </QueryClientProvider>
+    <ContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <Home />
+      </QueryClientProvider>
+    </ContextProvider>
   );
 }
 
