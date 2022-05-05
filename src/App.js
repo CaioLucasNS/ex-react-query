@@ -1,11 +1,7 @@
-import "./App.css";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Home } from "./pages/Home";
-import { createContext } from "react";
 import { ContextProvider } from "./context";
-
-const queryClient = new QueryClient();
-const context = createContext();
+import { Home } from "./pages/Home";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "./services/queryClient";
 
 function App() {
   return (
